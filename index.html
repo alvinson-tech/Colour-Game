@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <title>Colour Game</title>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Mono', monospace;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                #f5f5f5;
+            background-size: 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-top: 10px;
+        }
+
+        .branding {
+            color: #666;
+            font-size: 0.875rem;
+            margin: 0 0 1.5rem 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+
+        .game-over-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 1.25rem;
+            color: #555;
+        }
+
+        .stats-divider {
+            color: #999;
+        }
+        
+        .color-word {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+        
+        .color-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: rgba(255, 255, 255, 0.821);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.222);
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-option::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--line-color);
+        }
+        
+        .color-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        #startButton {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 700;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        #startButton:hover {
+            background: #1d4ed8;
+        }
+
+        .game-over {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .final-score {
+            font-size: 1.25rem;
+            margin: 0.5rem 0;
+            color: #2563eb;
+        }
+
+        .instructions {
+            color: #666;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="branding">alvin.fun</div>
+    <div class="game-container">
+        <h1>Colour Game</h1>
+        <p class="instructions">Select the colour of the TEXT<br>Not the word itself</p>
+        <div class="stats-row">
+            <span>Score: <span id="score">0</span></span>
+            <span class="stats-divider">||</span>
+            <span>Time: <span id="timer">00:15</span></span>
+        </div>
+        <div class="color-word" id="colorWord">Color</div>
+        <div class="options" id="options"></div>
+        <button id="startButton">Start Game</button>
+    </div>
+    <div class="game-over-container" id="gameOverContainer">
+        <div class="game-over" id="gameOver">
+            <h2>Game Over!</h2>
+            <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+        </div>
+    </div>
+
+    <script>
+        const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'brown'];
+        let score = 0;
+        let gameTimer;
+        let timeLeft;
+        
+        const colorWord = document.getElementById('colorWord');
+        const optionsContainer = document.getElementById('options');
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('startButton');
+        const gameOverDiv = document.getElementById('gameOver');
+        const gameOverContainer = document.getElementById('gameOverContainer');
+        const finalScoreElement = document.getElementById('finalScore');
+        
+        function formatTime(seconds) {
+            return `00:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function getRandomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        function createNewQuestion() {
+            const textColor = getRandomColor();
+            let wordColor;
+            do {
+                wordColor = getRandomColor();
+            } while (wordColor === textColor);
+            
+            colorWord.style.color = textColor;
+            colorWord.textContent = wordColor;
+            
+            optionsContainer.innerHTML = '';
+            const shuffledColors = [...colors].sort(() => Math.random() - 0.5);
+            shuffledColors.forEach(color => {
+                const button = document.createElement('button');
+                button.className = 'color-option';
+                button.style.setProperty('--line-color', color);
+                
+                const colorName = document.createElement('span');
+                colorName.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+                
+                button.appendChild(colorName);
+                button.onclick = () => checkAnswer(color, textColor);
+                optionsContainer.appendChild(button);
+            });
+        }
+        
+        function checkAnswer(selectedColor, correctColor) {
+            if (selectedColor === correctColor) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            createNewQuestion();
+        }
+        
+        function endGame() {
+            clearInterval(gameTimer);
+            colorWord.textContent = "Time's Up!";
+            colorWord.style.color = "#2563eb";
+            optionsContainer.innerHTML = '';
+            startButton.style.display = 'block';
+            gameOverContainer.style.display = 'block';
+            gameOverDiv.style.display = 'block';
+            finalScoreElement.textContent = score;
+        }
+        
+        function startGame() {
+            score = 0;
+            scoreElement.textContent = '0';
+            timeLeft = 15;
+            timerElement.textContent = formatTime(timeLeft);
+            startButton.style.display = 'none';
+            gameOverContainer.style.display = 'none';
+            gameOverDiv.style.display = 'none';
+            
+            createNewQuestion();
+            
+            gameTimer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = formatTime(timeLeft);
+                if (timeLeft === 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+        
+        startButton.onclick = startGame;
+    </script>
+</body>
+</html>
