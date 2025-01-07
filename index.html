@@ -5,163 +5,202 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Space Mono', monospace;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Mono', monospace;
+}
 
-        body {
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            background: 
-                linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-                #f5f5f5;
-            background-size: 20px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            padding-top: 10px;
-        }
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        #f5f5f5;
+    background-size: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 10px;
+}
 
-        .branding {
-            color: #666;
-            font-size: 0.875rem;
-            margin: 0 0 1.5rem 0;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .game-container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            backdrop-filter: blur(5px);
-        }
+.branding {
+    color: #666;
+    font-size: 0.875rem;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
 
-        .game-over-container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            margin-top: 1rem;
-            position: relative;
-            z-index: 1;
-            backdrop-filter: blur(5px);
-            display: none;
-        }
+.game-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+}
 
-        h1 {
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .stats-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-            font-size: 1.25rem;
-            color: #555;
-        }
+.game-over-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    display: none;
+}
 
-        .stats-divider {
-            color: #999;
-        }
-        
-        .color-word {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 1.5rem 0;
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 1rem 0;
-            justify-content: center;
-        }
-        
-        .color-option {
-            display: flex;
-            align-items: center;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            background: rgba(255, 255, 255, 0.821);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.222);
-            font-size: 0.9rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .color-option::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: var(--line-color);
-        }
-        
-        .color-option:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        #startButton {
-            padding: 12px 24px;
-            font-size: 1rem;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-weight: 700;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        #startButton:hover {
-            background: #1d4ed8;
-        }
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
 
-        .game-over {
-            margin-top: 1.5rem;
-            display: none;
-        }
+.stats-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #555;
+}
 
-        .final-score {
-            font-size: 1.25rem;
-            margin: 0.5rem 0;
-            color: #2563eb;
-        }
+.stats-divider {
+    color: #999;
+}
 
-        .instructions {
-            color: #666;
-            margin: 1rem 0;
-            font-size: 0.875rem;
-        }
+.color-word {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+    margin: 1rem 0;
+    justify-content: center;
+}
+
+.color-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: rgba(255, 255, 255, 0.821);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.222);
+    font-size: 0.875rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.color-option::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background-color: var(--line-color);
+}
+
+.color-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 700;
+    margin: 0 auto;
+    display: block;
+    max-width: 200px;
+}
+
+#startButton:hover {
+    background: #1d4ed8;
+}
+
+.game-over {
+    margin-top: 1.5rem;
+    display: none;
+}
+
+.final-score {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    color: #2563eb;
+}
+
+.instructions {
+    color: #666;
+    margin: 1rem 0;
+    font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    .color-word {
+        font-size: 1.5rem;
+    }
+
+    .stats-row {
+        font-size: 0.875rem;
+        gap: 0.25rem;
+    }
+
+    #startButton {
+        font-size: 0.875rem;
+        padding: 8px 16px;
+    }
+
+    .options {
+        gap: 6px;
+    }
+
+    .color-option {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+
+    .instructions {
+        font-size: 0.75rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -186,7 +225,7 @@
     </div>
 
     <script>
-        const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'brown'];
+        const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'brown', 'orange', 'black'];
         let score = 0;
         let gameTimer;
         let timeLeft;
